@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hallom.dao.UserDao">
+    
+    <sql id="selectCondition">
+         uid,
+        username,
+        mobilephone,
+        sex,
+        schoolId,
+        birthday,
+        admissionTime,
+        portraitUrl
+     </sql>
+    <insert id="insert" parameterType="com.hallom.entity.User">
+        INSERT INTO
+        t_hallom_user
+        (username,
+        password,
+        mobilephone,
+        sex,
+        schoolId,
+        birthday,
+        admissionTime,
+        createTime,
+        updateTime)
+        VALUES
+        (#{username},
+        #{password},
+        #{mobilephone},
+        #{sex},
+        #{schoolId},
+        #{birthday},
+        #{admissionTime},
+        now(),
+        now())
+    </insert>
+
+    <select id="selectUserByUsernameOrMobilephone" resultType="com.hallom.entity.User">
+        SELECT
+       <include refid="selectCondition"/>
+        FROM
+        t_hallom_user
+        WHERE
+        username=#{username}
+        or
+        mobilephone=#{mobilephone}
+    </select>
+    
+    <select id="selectUserByUsernamAndPassword" resultType="com.hallom.entity.User">
+        SELECT
+        <include refid="selectCondition"/>
+        FROM
+        t_hallom_user
+        WHERE
+        (username=#{loginName}
+        and
+        password=#{password})
+        or
+        (mobilephone=#{loginName}
+        and
+        password=#{password}
+        )
+    </select>
+</mapper>
